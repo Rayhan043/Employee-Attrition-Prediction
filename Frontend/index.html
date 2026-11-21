@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Attrition Prediction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-icon">H</div>
+      <span>HR Analytics</span>
+    </div>
+    <div class="api-status">
+      <span id="apiDot" class="status-dot"></span>
+      <span id="apiStatus">Connecting...</span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="page-heading">
+      <div>
+        <h1>Employee Attrition Prediction</h1>
+        <p>Enter employee information to predict the likelihood of attrition.</p>
+      </div>
+    </section>
+
+    <div class="main-grid">
+
+      <section class="form-card">
+        <div class="card-heading">
+          <h2>Employee Information</h2>
+          <span>All fields are required</span>
+        </div>
+
+        <form id="predictionForm">
+
+          <div class="form-section">
+            <h3>Work Experience</h3>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="satisfaction_level">Satisfaction Level</label>
+                <input type="number" id="satisfaction_level"
+                  min="0.09" max="1" step="0.01" value="0.65" required>
+                <small>Range: 0.09 – 1.00</small>
+              </div>
+
+              <div class="field">
+                <label for="last_evaluation">Last Evaluation</label>
+                <input type="number" id="last_evaluation"
+                  min="0.36" max="1" step="0.01" value="0.75" required>
+                <small>Range: 0.36 – 1.00</small>
+              </div>
+
+              <div class="field">
+                <label for="number_project">Number of Projects</label>
+                <input type="number" id="number_project"
+                  min="2" max="7" value="4" required>
+              </div>
+
+              <div class="field">
+                <label for="average_monthly_hours">Average Monthly Hours</label>
+                <input type="number" id="average_monthly_hours"
+                  min="96" max="310" value="200" required>
+              </div>
+
+              <div class="field">
+                <label for="years_at_company">Years at Company</label>
+                <input type="number" id="years_at_company"
+                  min="2" max="10" value="3" required>
+              </div>
+
+              <div class="field">
+                <label>Hours per Project</label>
+                <input type="text" id="hours_per_project" value="50.00" readonly>
+                <small>Automatically calculated</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Organization Details</h3>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="department">Department</label>
+                <select id="department" required>
+                  <option value="sales">Sales</option>
+                  <option value="accounting">Accounting</option>
+                  <option value="hr">HR</option>
+                  <option value="technical">Technical</option>
+                  <option value="support">Support</option>
+                  <option value="management">Management</option>
+                  <option value="IT">IT</option>
+                  <option value="product_mng">Product Management</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="RandD">Research & Development</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="salary">Salary Category</label>
+                <select id="salary" required>
+                  <option value="low">Low</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Workplace History</h3>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="work_accident">Work Accident</label>
+                <select id="work_accident">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="promotion_last_5years">Promotion in Last 5 Years</label>
+                <select id="promotion_last_5years">
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="reset" class="btn-reset">Reset</button>
+            <button type="submit" class="btn-submit" id="submitButton">
+              Predict Attrition
+            </button>
+          </div>
+
+          <p id="formMessage" class="form-message"></p>
+        </form>
+      </section>
+
+      <aside class="result-card">
+        <h2>Prediction Result</h2>
+        <p class="result-subtitle">Model output will appear here.</p>
+
+        <div id="emptyResult" class="empty-result">
+          <div class="empty-icon">↗</div>
+          <h3>Waiting for prediction</h3>
+          <p>Complete the employee information and click Predict Attrition.</p>
+        </div>
+
+        <div id="predictionResult" class="prediction-result hidden">
+          <span class="result-label">PREDICTED OUTCOME</span>
+          <h3 id="predictionText">—</h3>
+          <p id="predictionDescription"></p>
+
+          <div class="probability-section">
+            <div class="probability-heading">
+              <span>Leave Probability</span>
+              <strong id="probabilityText">0%</strong>
+            </div>
+            <div class="progress-track">
+              <div id="probabilityBar" class="progress-bar"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-footer">
+          <span>Model</span>
+          <strong>Random Forest Classifier</strong>
+        </div>
+        <p class="disclaimer">
+          Prediction is a model estimate and should not be used as the sole basis for employee decisions.
+        </p>
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
