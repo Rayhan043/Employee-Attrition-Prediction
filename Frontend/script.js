@@ -1,5 +1,9 @@
 
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE =
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname === "localhost"
+    ? "http://127.0.0.1:8000"
+    : "";
 
 const form = document.getElementById("predictionForm");
 const submitButton = document.getElementById("submitButton");
